@@ -1,4 +1,3 @@
-style-guides
-============
+# SUSE code style guides
 
-Collection of code style guides used at SUSE
+This repository contains the code style guides used at SUSE.
