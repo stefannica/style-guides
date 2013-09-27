@@ -480,10 +480,12 @@ the class is executing some process, the class name should usually end with
    lines in your `~/.vimrc`:
 
    ```vim
-   " Highlight traling whitespace
-   autocmd ColorScheme * highlight TrailingWhitespace ctermbg=red guibg=red
-   autocmd InsertEnter * match TrailingWhitespace /some nonsense/
-   autocmd InsertLeave * match TrailingWhitespace /\s\+$/}}
+   " highlight trailing whitespaces (except when typing) and spaces before tabs
+   highlight ExtraWhitespace ctermbg=red guibg=red
+   autocmd BufWinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t/
+   autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+   autocmd InsertLeave * match ExtraWhitespace /\s\+$\| \+\ze\t/
+   autocmd BufWinLeave * call clearmatches()
    ```
 
 ####  Strings
