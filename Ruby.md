@@ -3,7 +3,7 @@
 ## Background
 
 These are coding conventions used by all SUSE projects written in Ruby (such as
-[SUSE Studio](http://susestudio.com), [WebYaST]
+[SUSE Cloud](https://www.suse.com/products/suse-cloud/), [SUSE Studio](http://susestudio.com), [WebYaST]
 (http://webyast.github.com/webyast/), [OBS](http://build.opensuse.org) and
 [SLMS](https://www.suse.com/products/susestudio/features/lifecycle-management.html)).
 We are making them public for the benefit of our external contributors and the
