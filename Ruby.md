@@ -179,7 +179,7 @@ reason and you don’t do that too often.
 1. Write short arrays on one line like this:
 
    ```ruby
-   [1, 2, 3]
+   [ 1, 2, 3 ]
    ```
 
 1. Write longer arrays on multiple lines like this:
