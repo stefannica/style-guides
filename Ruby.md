@@ -10,6 +10,10 @@ We are making them public for the benefit of our external contributors and the
 Ruby community in general. The original author and maintainer is [David
 Majda](https://github.com/dmajda).
 
+These coding conventions are extension of semi-official [Ruby style guide written by Bozhidar Batsov]
+(https://github.com/bbatsov/ruby-style-guide). If something is not covered by
+this guide, then to have consistency across code, use advises from bbatsov one.
+
 ## General rules
 
 We aim to write code that is readable, understandable and easily modifiable.
