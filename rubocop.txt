@@ -98,6 +98,9 @@ YaST:
   IndentWhenRelativeTo: end
 
 Style/CollectionMethods:
+Hound:
+  Enabled: true
+Machinery:
   Enabled: false
 
 Style/EmptyLinesAroundBlockBody:
