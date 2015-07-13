@@ -44,8 +44,6 @@ reason and you don’t do that too often.
    when writing code and tests for it simultaneously)
    or viewing diffs.
 
-1. **Use two spaces for indentation. Tabs are forbidden.**
-
 1. **Avoid trailing whitespace.**
 
    Tip: You can highlight trailing whitespace in vim by adding the following
@@ -59,14 +57,6 @@ reason and you don’t do that too often.
    ```
 
 ## Comments
-
-1. **Begin all comments with `#` followed by a space. Do not use
-   `=begin`/`=end` multi-line comments.**
-
-   Rationale: The space helps readability. The `=begin`/`=end` comments often
-   confuse syntax highlighters and various tools, and decreases scanability of
-   the code (it’s less obvious that something is a comment from the first
-   look).
 
 1. **Comments should not duplicate the code, but explain things that are not
    possible to express in it.** These are mainly:
@@ -205,6 +195,8 @@ reason and you don’t do that too often.
 
 1. Avoid the `%w` alternative syntax for arrays.
 
+   *Different from standard*
+
    Rationale: Little less quotes do not outweigh the loss of syntax regularity
    (which is useful when munging source code with regular expressions/scripts)
    and confusion of non-Ruby programmers reading Ruby code.
@@ -255,6 +247,8 @@ permissive.
 
 1. Avoid the `%r` alternative syntax for regular expressions.
 
+   *Different from standard*
+
    Rationale: Little less escape characters do not outweigh the loss of syntax
    regularity (which is useful when munging source code with regular
    expressions/scripts) and confusion of non-Ruby programmers reading Ruby
@@ -269,12 +263,6 @@ scope means a need for longer (more precisely qualified) name. Use
 `lower_case_underscore_separated_words` for variable names.
 
 ### Operators
-
-1. Always put at least one space around all operators:
-
-   ```ruby
-   1 + 2 * 3
-   ```
 
 1. When multiple symmetrical expressions are on lines one after another, align
    their operators. On the other hand, do not align operators of unrelated
@@ -337,37 +325,6 @@ scope means a need for longer (more precisely qualified) name. Use
 ## Statements
 
 ### `if` and `unless` statements
-
-1. Generally, use multi-line `if` statements:
-
-   ```ruby
-   if foo
-      bar
-   elsif baz
-      qux
-   else
-      quux
-   end
-   ```
-
-1. If there are no `elsif` or `else` clauses and both the condition and the
-   statement in the `if` clause are short, use the trailing form:
-
-   ```ruby
-   foo if bar
-   ```
-
-   This form is especially useful for handling corner cases at the beginning of
-   methods:
-
-   ```ruby
-   def print_user(user)
-      return if user.invalid?
-      puts user.name
-   end
-   ```
-
-   Never nest trailing form or combine it with other trailing statements.
 
 1. If the condition of an `if` statement is too long to fit on one line, do not
    wrap it. Instead, extract the value into one or more variables in front of
@@ -438,27 +395,6 @@ scope means a need for longer (more precisely qualified) name. Use
 
 #### Parameters
 
-When calling a method, generally use parentheses around passed parameters. Avoid them only in these cases:
-
-1. When using a DSL where parentheses usually are not used. Often these are
-   method calls which take a block and mimic a regular language statements —
-   e.g. `task` in Rake tasks or `describe` and `it` in RSpec tests. Class
-   “attributes” like ActiveRecord validations or associations are another
-   common form.
-
-1. When calling a statement-like method. Statement-like methods are usually
-   called without explicit receiver and in such a way that they do not return
-   any value. Often they have only one or two parameters. Typical examples are:
-
-   - printing methods like `puts`
-   - logging methods
-   - assertion methods
-   - system-calling methods (`system`, `exec`, …)
-
-1. When you find the code significantly more readable without the parentheses.
-
-1. When calling a method without any parameters.
-
 When the parameters do not fit on one line, write the method call like this:
 
 ```ruby
@@ -477,35 +413,6 @@ foo bar,
     qux,
     quux
 ```
-
-If the method takes a hash as a last parameter, do not enclose it in `{`…`}`,
-just inline the keys and values among regular parameters (and align the arrows
-if each parameter is on separate line). If it takes more than one hash as
-parameters, enclose all of them (including the last one) in `{`…`}` and treat
-them each as a single parameter.
-
-### Blocks
-
-1. For one-line blocks, use the `{`…`}` syntax. For multi-line blocks, use the
-   `do`…`end` syntax.
-
-1. Do not call methods on results of multi-line blocks. Save the result into a
-   variable and call the methods on it instead. For example, instead of:
-
-   ```ruby
-   lines = people.map do |person|
-      person.name + " " + person.surname
-   end.join("\n")
-   ```
-
-   write:
-
-   ```ruby
-   names = people.map do |person|
-      person.name + " " + person.surname
-   end
-   lines = names.join("\n")
-   ```
 
 #### Parameters
 
@@ -542,9 +449,6 @@ the code with return value checks. This power is easily misused.
 
 #### Raising exceptions
 
-1. Raise exceptions only in exceptional situations. Do not abuse them as
-   control-flow mechanism (“long-distance goto”).
-
 1. Always try to raise exception of appropriate type and on the correct level of
    abstraction. Do not allow low-level exceptions (e.g. from network, database,
    or filesystem) leak through your interface.
@@ -578,17 +482,6 @@ the code with return value checks. This power is easily misused.
    Rationale: Using `$!` is fragile. It easily breaks when exception is raised
    in an exception handler or code is moved around.
 
-1. When using the rescue statement to wrap the whole method body, do not use
-   separate `begin`…`end` around it, but reuse `def`….`end` of the method:
-
-   ```ruby
-   def foo
-      bar
-   rescue BazError => e
-      qux
-   end
-   ```
-
 #### Defining exception classes
 
 1. Make your exception classes subclasses of `StandardError` so they are
@@ -602,16 +495,7 @@ the code with return value checks. This power is easily misused.
 
 ### Method definitions
 
-Write short methods that do one thing well and nothing more. Once you need to
-scroll to view method’s beginning/end, you have sections with comment headings
-or you have more than 3 levels of indentation, your method is probably too
-complex and should be split.
-
 ### Names
-
-1. Use short and descriptive method names. Above all, they should make sense at
-   the place where the method is called. Use
-   `lower_case_underscore_separated_words` for method names.
 
 1. Except for accessors and query methods, method names should generally
    contain a verb indicating the action of the method. Try to avoid generic
@@ -620,9 +504,6 @@ complex and should be split.
 1. Method names should almost never use conjugations like “and”, “or”, etc. It
    usually means that the method is doing two or more things and that it should
    be split up.
-
-1. Use the `?` suffix for methods returning boolean value. Do not use the `is_`
-   prefix for them at the same time, it’s redundant.
 
 1. Sometimes you can have a problem with coming up with suitable name for a
    method. In that case, consider the possibility that it is just a symptom of
@@ -680,66 +561,12 @@ complex and should be split.
 
 ### Class definitions
 
-1. Write short classes that do one thing well and nothing more. Think about how
-   the class will be used by its users and design the API accordingly.
-
-1. Split class definition into the following sections:
-    - Constant definitions
-    - Various definitions (e.g. ActiveRecord validations and associations)
-    - Initialization code
-    - Singleton methods
-    - Public methods
-    - Protected methods
-    - Private methods
-
-   Some of these sections won’t be always present. Sometimes it makes more
-   sense to divide the class by functionality, but this is often a symptom that
-   the class is trying to do too much.
-
-   Rationale: While dividing classes into sections restricts flexibility
-   somewhat, it leads to predictable code layout and makes orientation in
-   classes much easier for programmers not familiar with the class code.
-
 1. Do not put any empty lines after the beginning and before the end of the
    class body. Put empty lines between class sections.
 
-1. Start sections with protected and private methods by `protected`/`private`
-   method call, separated by an empty line from the following methods. Do not
-   increase indentation of the following methods. Do not change method
-   visibility explicitly by invoking the `public`/`protected`/`private` method
-   with explicit method name(s).
-
-1. When defining class methods, use the `def self.method_name` syntax:
-
-   ```ruby
-   class Math
-     def self.sin(a)
-       # …
-     end
-
-     def self.cos(a)
-       # …
-     end
-   end
-   ```
-
-   Rationale: While explicit definition of the singleton class using `class <<
-   self` is more logical (it corresponds to what the interpreter actually does
-   internally) and allows to use class methods of the singleton class between
-   `class << self` and `end`, the `self.` prefix makes singleton methods stand
-   out. This is more useful in practice.
-
 ### Names
-
-Use short and descriptive class names. Above all, they should make sense at the
-place where the class instance is created or static methods called. Use
-CamelCase for method names.
 
 Usually, class names should contain a noun describing what the class instance
 represents, possibly precised with few adjectives. If the primary purpose of
 the class is executing some process, the class name should usually end with
 “-er” (as in `FooImporter`, `BarExporter`, `BazScanner`, etc.)
-
-### Module definitions
-
-Rules for module definitions are basically the same as for class definitions.
