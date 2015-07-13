@@ -1,0 +1,136 @@
+This file lists the Rubocop config of the SUSE projects using Rubocop and how
+they differ from the default [Hound](http://houndci.com) config.
+
+Hound Default Config:
+    https://raw.githubusercontent.com/thoughtbot/hound/master/config/style_guides/ruby.yml
+
+YaST:
+    https://github.com/yast/yast-devtools/blob/master/ytools/y2tool/rubocop_yast_style.yml
+Machinery:
+    https://github.com/SUSE/machinery/blob/master/.rubocop.yml
+Crowbar:
+    https://github.com/crowbar/barclamp-crowbar/blob/master/.rubocop.yml
+Portus:
+    https://github.com/SUSE/Portus/blob/master/.rubocop.yml
+
+Lint/EndAlignment:
+Hound:
+  AlignWith: keyword
+Machinery, Crowbar:
+  AlignWith: variable
+
+Lint/UnusedMethodArgument:
+Hound:
+  Enabled: true
+Crowbar:
+  Enabled: false
+
+Metrics/AbcSize:
+Hound:
+  Max: 15
+Crowbar:
+  Max: 50
+Portus:
+  Max: 30
+
+Metrics/LineLength:
+Hound:
+  Max: 80
+Machinery, Portus:
+  Max: 100
+Portus:
+  # To make it possible to copy or click on URIs in the code, we allow lines
+  # contaning a URI to be longer than Max.
+  AllowURI: true
+  URISchemes:
+    - http
+    - https
+
+Metrics/MethodLength:
+Hound:
+  Max: 10
+Portus:
+  # NOTE: as in the one before, this would be nice but there are too many errors
+  # on this and it's not urgent.
+  # Configuration parameters: CountComments.
+  Max: 252
+
+Rails/Output:
+Hound:
+  Enabled: true
+Machinery:
+  Enabled: false
+
+Style/AlignArray:
+Hound:
+  Enabled: true
+Machinery:
+  Enabled: false
+
+Style/AlignHash:
+Hound:
+  EnforcedHashRocketStyle: key
+  EnforcedColonStyle: key
+YaST:
+  EnforcedHashRocketStyle: table
+  EnforcedColonStyle: table
+Machinery:
+  Enabled: false
+
+Style/AlignParameters:
+Hound:
+  EnforcedStyle: with_first_parameter
+YaST:
+  EnforcedStyle: with_fixed_indentation
+Machinery, Portus:
+  Enabled: false
+
+Style/Blocks
+Hound:
+  Enabled: true
+Machinery:
+  Enabled: false
+
+Style/CaseIndentation:
+Hound:
+  IndentWhenRelativeTo: case
+YaST:
+  IndentWhenRelativeTo: end
+
+Style/CollectionMethods:
+  Enabled: false
+
+Style/EmptyLinesAroundBlockBody:
+Hound:
+  Enabled: true
+Portus:
+  # It's actually better for the eyes to add a new line around the block body if
+  # it's a big chunk of code (e.g. in tests).
+  Enabled: false
+
+Style/FirstParameterIndentation:
+Hound:
+  Enabled: true
+Portus:
+  Enabled: false
+
+Style/MultilineOperationIndentation:
+Hound:
+  EnforcedStyle: aligned
+YaST, Machinery, Crowbar:
+  EnforcedStyle: indented
+Portus:
+  Enabled: false
+
+Style/SignalException:
+Hound:
+  Enabled: false
+  EnforcedStyle: semantic
+YaST:
+  EnforcedStyle: only_raise
+
+Style/StringLiteralsInInterpolation:
+Hound:
+  EnforcedStyle: single_quotes
+YaST, Machinery, Crowbar:
+  EnforcedStyle: double_quotes
