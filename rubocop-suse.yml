@@ -1,0 +1,44 @@
+Lint/EndAlignment:
+  StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#ruby-style-guide
+  AlignWith: variable
+
+Metrics/AbcSize:
+  StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#ruby-style-guide
+  Max: 30
+
+Metrics/LineLength:
+  StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#ruby-style-guide
+  Max: 100
+  # To make it possible to copy or click on URIs in the code, we allow lines
+  # contaning a URI to be longer than Max.
+  AllowURI: true
+  URISchemes:
+    - http
+    - https
+
+Style/AlignHash:
+  StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#ruby-style-guide
+  EnforcedHashRocketStyle: table
+  EnforcedColonStyle: table
+
+Style/AlignParameters:
+  StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#ruby-style-guide
+  Enabled: false
+
+Style/CollectionMethods:
+  StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#ruby-style-guide
+  Enabled: false
+
+Style/EmptyLinesAroundBlockBody:
+  # It's actually better for the eyes to add a new line around the block body if
+  # it's a big chunk of code (e.g. in tests).
+  StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#ruby-style-guide
+  Enabled: false
+
+Style/MultilineOperationIndentation:
+  StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#ruby-style-guide
+  EnforcedStyle: indented
+
+Style/StringLiteralsInInterpolation:
+  StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#ruby-style-guide
+  EnforcedStyle: double_quotes
