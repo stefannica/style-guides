@@ -3,6 +3,12 @@
 #
 # The configuration is tested and used with the Rubocop version used by Hound
 # (http://hound-ci.com).
+#
+# We use the default Hound config as a baseline:
+#
+#   https://raw.githubusercontent.com/thoughtbot/hound/master/config/style_guides/ruby.yml
+#
+# This file contains the rules with derive from this.
 
 Lint/EndAlignment:
   StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#lintendalignment
