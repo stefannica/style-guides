@@ -1,3 +1,9 @@
+# This is the shared Rubocop configuration for SUSE projects. It is maintained
+# at https://github.com/SUSE/style-guides/blob/master/rubocop-suse.yml
+#
+# The configuration is tested and used with the Rubocop version used by Hound
+# (http://hound-ci.com).
+
 Lint/EndAlignment:
   StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#ruby-style-guide
   AlignWith: variable
