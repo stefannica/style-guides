@@ -743,3 +743,43 @@ the class is executing some process, the class name should usually end with
 ### Module definitions
 
 Rules for module definitions are basically the same as for class definitions.
+
+## Rationals for Rubocop configuration
+
+### Lint/EndAlignment
+
+Gives nicer formatting.
+
+### Metrics/AbcSize
+
+The default value is just too small.
+
+### Metrics/LineLength
+
+Sometimes it's just not practical to cut off at 80, so leave a little bit of
+leeway.
+
+To make it possible to copy or click on URIs in the code, we allow lines
+contaning a URI to be longer than Max.
+
+### Style/AlignHash
+
+### Style/AlignParameters
+
+### Style/CollectionMethods
+
+### Style/EmptyLinesAroundBlockBody
+
+It's actually better for the eyes to add a new line around the block body if
+it's a big chunk of code (e.g. in tests).
+
+### Style/MultilineOperationIndentation
+
+### Style/StringLiterals
+
+There is no performance benefit to using single quotes anymore, so use double
+quotes for better consistency.
+
+### Style/StringLiteralsInInterpolation
+
+In interpolation double quotes are more practible, so prefer using them.
