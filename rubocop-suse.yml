@@ -45,6 +45,10 @@ Style/MultilineOperationIndentation:
   StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#ruby-style-guide
   EnforcedStyle: indented
 
+Style/StringLiterals:
+  StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#strings
+  EnforcedStyle: double_quotes
+
 Style/StringLiteralsInInterpolation:
   StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#ruby-style-guide
   EnforcedStyle: double_quotes
