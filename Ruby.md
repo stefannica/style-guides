@@ -3,16 +3,13 @@
 ## Background
 
 These are coding conventions used by all SUSE projects written in Ruby (such as
-[SUSE Cloud](https://www.suse.com/products/suse-cloud/), [SUSE Studio](http://susestudio.com), [WebYaST]
-(http://webyast.github.com/webyast/), [OBS](http://build.opensuse.org) and
-[SLMS](https://www.suse.com/products/susestudio/features/lifecycle-management.html)).
+[SUSE Cloud](https://www.suse.com/products/suse-cloud/), [SUSE Studio](http://susestudio.com),
+[YaST](http://yast.github.io/), or [Machinery](http://machinery-project.org).
 We are making them public for the benefit of our external contributors and the
-Ruby community in general. The original author and maintainer is [David
-Majda](https://github.com/dmajda).
+Ruby community in general. The original author is [David
+Majda](https://github.com/dmajda). The current maintainer is [Cornelius
+Schumacher](https://github.com/cornelius).
 
-These coding conventions are extension of semi-official [Ruby style guide written by Bozhidar Batsov]
-(https://github.com/bbatsov/ruby-style-guide). If something is not covered by
-this guide, then to have consistency across code, use advises from bbatsov one.
 
 ## General rules
 
@@ -32,41 +29,48 @@ rules in this document as strong recommendations, follow them as much as
 possible, but if you need to break them, do it. Just make sure you have a good
 reason and you don’t do that too often.
 
-## Code layout
+Avoid changing big masses of code just for the sake of adapting the style. The
+risk of introducing bugs can be high and reliable code is more valuable than
+having the perfect style. A good approach is to adapt code which is under active
+development and testing, for example accepting pull requests only when they
+don't contain style issues.
 
-1. **Wrap lines at 80 columns.** This is not a hard rule, but if you break it,
-	 it should be only because the code would be less readable otherwise (e.g.
-   you are embedding a long URL).
 
-   Rationale: While long lines are not a problem on wide-screen displays, many
-   people look at the code on terminals, e-mail clients, etc. where the viewport
-   isn’t that wide. People also use multiple editor windows side-by-side (e.g.
-   when writing code and tests for it simultaneously)
-   or viewing diffs.
+## Style guide
 
-1. **Use two spaces for indentation. Tabs are forbidden.**
+We follow the semi-official [Ruby style guide written by Bozhidar Batsov]
+(https://github.com/bbatsov/ruby-style-guide). This generally is the reference.
+So if you follow these rules you will be fine. We will refer to it as the
+upstream style guide.
 
-1. **Avoid trailing whitespace.**
+In this document we collect the few cases where we deviate from the upstream
+style guide, some additional guidelines not covered by the semi-official guide,
+and more information about the rationale behind the guidelines.
 
-   Tip: You can highlight trailing whitespace in vim by adding the following
-   lines in your `~/.vimrc`:
 
-   ```vim
-   " Highlight traling whitespace
-   autocmd ColorScheme * highlight TrailingWhitespace ctermbg=red guibg=red
-   autocmd InsertEnter * match TrailingWhitespace /some nonsense/
-   autocmd InsertLeave * match TrailingWhitespace /\s\+$/}}
-   ```
+### Deviations from the upstream style guide
 
-## Comments
+1. Avoid the `%w` alternative syntax for arrays.
 
-1. **Begin all comments with `#` followed by a space. Do not use
-   `=begin`/`=end` multi-line comments.**
+   *Different from standard*
 
-   Rationale: The space helps readability. The `=begin`/`=end` comments often
-   confuse syntax highlighters and various tools, and decreases scanability of
-   the code (it’s less obvious that something is a comment from the first
-   look).
+   Rationale: Little less quotes do not outweigh the loss of syntax regularity
+   (which is useful when munging source code with regular expressions/scripts)
+   and confusion of non-Ruby programmers reading Ruby code.
+
+1. Avoid the `%r` alternative syntax for regular expressions.
+
+   *Different from standard*
+
+   Rationale: Little less escape characters do not outweigh the loss of syntax
+   regularity (which is useful when munging source code with regular
+   expressions/scripts) and confusion of non-Ruby programmers reading Ruby
+   code.
+
+
+### Additional guidelines
+
+#### Comments
 
 1. **Comments should not duplicate the code, but explain things that are not
    possible to express in it.** These are mainly:
@@ -129,21 +133,7 @@ reason and you don’t do that too often.
    is actually safe to delete it now. So it will stay there, slowly bitrotting,
    and just creating a noise and distraction.
 
-## Literals
-
-### Strings
-
-1. **Write all strings surrounded with double quotes.** Single quotes should be
-   used only in cases where interpolation is really not desired (e.g. you have
-   a string containing the `#` character).
-
-   Rationale: In many languages, single quotes are used for characters, not
-   strings. This rule makes it easier to work in multi-language environment.
-
-1. **Prefer string interpolation to concatenating using the `+` operator.**
-   However, use string interpolation with short expressions only. If the
-   interpolated expression is too long, save its value into a variable in front
-   of the string literal and use that variable inside the string.
+#### Strings
 
 1. **For multi-line strings, you can use either the heredoc syntax or create
    the string using concatenation.** Prefer heredoc syntax for longer strings
@@ -178,7 +168,7 @@ reason and you don’t do that too often.
    expressions/scripts) and confusion of non-Ruby programmers reading Ruby
    code.
 
-### Arrays
+#### Arrays
 
 1. Write short arrays on one line like this:
 
@@ -203,13 +193,7 @@ reason and you don’t do that too often.
    (comma is a separator), it makes the last item less recognizable and it is
    inconsistent with other languages.
 
-1. Avoid the `%w` alternative syntax for arrays.
-
-   Rationale: Little less quotes do not outweigh the loss of syntax regularity
-   (which is useful when munging source code with regular expressions/scripts)
-   and confusion of non-Ruby programmers reading Ruby code.
-
-### Hashes
+#### Hashes
 
 1. Write short hashes on one line like this:
 
@@ -237,44 +221,7 @@ reason and you don’t do that too often.
    separator), it makes the last item less recognizable and it is inconsistent
    with other languages.
 
-### Regular expressions
-
-Writing good regular expressions is tricky. Always consider what inputs the
-expression may encounter and how flexible the regular expression should be. If
-you know in advance what values will get fed in, you should write the
-expression as strictly as possible, so that an unexpected value will trigger an
-error. On the other hand, if the expression will be used in unknown environment
-or on wide variety of inputs, it usually makes sense to make it more
-permissive.
-
-1. If the regular expression is complex or very long, use the extended form
-   (enabled using the `/x` flag) with indentation, whitespace and comments to
-   indicate structure and meaning. See e.g. “Define the messy regexen up here”
-   section of http://www.jwz.org/hacks/mork.pl for good examples of this in
-   Perl.
-
-1. Avoid the `%r` alternative syntax for regular expressions.
-
-   Rationale: Little less escape characters do not outweigh the loss of syntax
-   regularity (which is useful when munging source code with regular
-   expressions/scripts) and confusion of non-Ruby programmers reading Ruby
-   code.
-
-## Expressions
-
-### Variables
-
-Strive to make variable names short and meaningful. Generally longer variable
-scope means a need for longer (more precisely qualified) name. Use
-`lower_case_underscore_separated_words` for variable names.
-
-### Operators
-
-1. Always put at least one space around all operators:
-
-   ```ruby
-   1 + 2 * 3
-   ```
+#### Operators
 
 1. When multiple symmetrical expressions are on lines one after another, align
    their operators. On the other hand, do not align operators of unrelated
@@ -294,14 +241,6 @@ scope means a need for longer (more precisely qualified) name. Use
      very_long_expression_baz
    ```
 
-### Assignment
-
-1. Always put one space around the assignment operator:
-
-   ```ruby
-   a = 5
-   ```
-
 1. When multiple symmetrical assignments are on lines one after another, align
    their assignment operators. On the other hand, do not align assignment
    operators of unrelated assignments which look similar just by coincidence.
@@ -309,65 +248,7 @@ scope means a need for longer (more precisely qualified) name. Use
    Rationale: Alignment helps reader recognize that the assignments are related
    or symmetrical.
 
-1. Avoid multiple assignment except in two cases:
-
-    1. When a method returns an array of items which you want to assign into
-       separate variables:
-
-       ```ruby
-       x, y = polar_to_cartesian(r, phi)
-       ```
-
-    1. Inside a constructor where you are assigning passed parameters into
-       instance variables:
-
-       ```ruby
-       def initialize(x, y)
-          @x, @y = x, y
-       end
-       ```
-
-    1. Use idiomatic assignment operator `||=` when appropriate. Typical use is
-       to initialize some variable lazily (usually to save memory or time):
-
-       ```ruby
-       @plugins ||= load_plugins
-       ```
-
-## Statements
-
-### `if` and `unless` statements
-
-1. Generally, use multi-line `if` statements:
-
-   ```ruby
-   if foo
-      bar
-   elsif baz
-      qux
-   else
-      quux
-   end
-   ```
-
-1. If there are no `elsif` or `else` clauses and both the condition and the
-   statement in the `if` clause are short, use the trailing form:
-
-   ```ruby
-   foo if bar
-   ```
-
-   This form is especially useful for handling corner cases at the beginning of
-   methods:
-
-   ```ruby
-   def print_user(user)
-      return if user.invalid?
-      puts user.name
-   end
-   ```
-
-   Never nest trailing form or combine it with other trailing statements.
+#### Statements
 
 1. If the condition of an `if` statement is too long to fit on one line, do not
    wrap it. Instead, extract the value into one or more variables in front of
@@ -411,8 +292,6 @@ scope means a need for longer (more precisely qualified) name. Use
    no confusion about semantics. This is aided by the fact that Ruby has no
    falsey values except `false` and `nil`. The result is shorter code.
 
-### `while` and `until` statements
-
 1. Generally, use multi-line `while`/`until` statements:
 
    ```ruby
@@ -433,31 +312,7 @@ scope means a need for longer (more precisely qualified) name. Use
    Rules for the condition of `while`/`until` statements are the same as for
    `if`/`unless`.
 
-
-### Method calls
-
 #### Parameters
-
-When calling a method, generally use parentheses around passed parameters. Avoid them only in these cases:
-
-1. When using a DSL where parentheses usually are not used. Often these are
-   method calls which take a block and mimic a regular language statements —
-   e.g. `task` in Rake tasks or `describe` and `it` in RSpec tests. Class
-   “attributes” like ActiveRecord validations or associations are another
-   common form.
-
-1. When calling a statement-like method. Statement-like methods are usually
-   called without explicit receiver and in such a way that they do not return
-   any value. Often they have only one or two parameters. Typical examples are:
-
-   - printing methods like `puts`
-   - logging methods
-   - assertion methods
-   - system-calling methods (`system`, `exec`, …)
-
-1. When you find the code significantly more readable without the parentheses.
-
-1. When calling a method without any parameters.
 
 When the parameters do not fit on one line, write the method call like this:
 
@@ -477,37 +332,6 @@ foo bar,
     qux,
     quux
 ```
-
-If the method takes a hash as a last parameter, do not enclose it in `{`…`}`,
-just inline the keys and values among regular parameters (and align the arrows
-if each parameter is on separate line). If it takes more than one hash as
-parameters, enclose all of them (including the last one) in `{`…`}` and treat
-them each as a single parameter.
-
-### Blocks
-
-1. For one-line blocks, use the `{`…`}` syntax. For multi-line blocks, use the
-   `do`…`end` syntax.
-
-1. Do not call methods on results of multi-line blocks. Save the result into a
-   variable and call the methods on it instead. For example, instead of:
-
-   ```ruby
-   lines = people.map do |person|
-      person.name + " " + person.surname
-   end.join("\n")
-   ```
-
-   write:
-
-   ```ruby
-   names = people.map do |person|
-      person.name + " " + person.surname
-   end
-   lines = names.join("\n")
-   ```
-
-#### Parameters
 
 Rules for block parameters are basically the same as for method parameters.
 However, some special rules for parameter names apply:
@@ -534,16 +358,13 @@ However, some special rules for parameter names apply:
    File.open { |f| … }
    ```
 
-### Exceptions
+#### Exceptions
 
 Exceptions are a nice mechanism that allows one to report errors with all
 associated information and process them on appropriate place without cluttering
 the code with return value checks. This power is easily misused.
 
-#### Raising exceptions
-
-1. Raise exceptions only in exceptional situations. Do not abuse them as
-   control-flow mechanism (“long-distance goto”).
+##### Raising exceptions
 
 1. Always try to raise exception of appropriate type and on the correct level of
    abstraction. Do not allow low-level exceptions (e.g. from network, database,
@@ -555,22 +376,7 @@ the code with return value checks. This power is easily misused.
 
 1. Get familiar with standard Ruby exception classes and try to use them as
    much as possible. But do not limit yourself to them and introduce new
-  exception classes as needed.
-
-#### Handling exceptions
-
-1. Do not use generic rescue exception handler (`rescue` or `rescue Exception
-   => e`) and rescue tail form (`foo = bar rescue nil`). Notable exception from
-   this rule are top-level catch-all handlers in scripts or various components
-   that generally just log the exception and/or present some error message to
-   users.
-
-   Rationale: By catching only exceptions you anticipate you make sure
-   unanticipated exceptions will pass through your handler and will be handled
-   by a generic top-level exception handler (either the Ruby one or a custom
-   one). This usually makes them visible. Since unanticipated exceptions often
-   mean bugs in the code, this strategy ensures that bugs won’t go unnoticed.
-   The opposite (using catch-all handlers) would hide them.
+   exception classes as needed.
 
 1. Name the variable which stores the exception in the exception handler `e`.
    Do not use the `$!` variable to access the last thrown exception.
@@ -578,18 +384,7 @@ the code with return value checks. This power is easily misused.
    Rationale: Using `$!` is fragile. It easily breaks when exception is raised
    in an exception handler or code is moved around.
 
-1. When using the rescue statement to wrap the whole method body, do not use
-   separate `begin`…`end` around it, but reuse `def`….`end` of the method:
-
-   ```ruby
-   def foo
-      bar
-   rescue BazError => e
-      qux
-   end
-   ```
-
-#### Defining exception classes
+##### Defining exception classes
 
 1. Make your exception classes subclasses of `StandardError` so they are
    caught by generic rescue statements.
@@ -598,20 +393,7 @@ the code with return value checks. This power is easily misused.
    (as much “inside” as possible). Do not define top-level exception classes
    unless they are project-wide classes intended to be used everywhere.
 
-## Definitions
-
-### Method definitions
-
-Write short methods that do one thing well and nothing more. Once you need to
-scroll to view method’s beginning/end, you have sections with comment headings
-or you have more than 3 levels of indentation, your method is probably too
-complex and should be split.
-
-### Names
-
-1. Use short and descriptive method names. Above all, they should make sense at
-   the place where the method is called. Use
-   `lower_case_underscore_separated_words` for method names.
+#### Methods
 
 1. Except for accessors and query methods, method names should generally
    contain a verb indicating the action of the method. Try to avoid generic
@@ -621,27 +403,13 @@ complex and should be split.
    usually means that the method is doing two or more things and that it should
    be split up.
 
-1. Use the `?` suffix for methods returning boolean value. Do not use the `is_`
-   prefix for them at the same time, it’s redundant.
-
 1. Sometimes you can have a problem with coming up with suitable name for a
    method. In that case, consider the possibility that it is just a symptom of
    a bigger problem, like unclear responsibility of the method or trying to do
    too much.
 
-### Parameters
-
-1. Always use parentheses around method parameters, except when the method does
-   not have any.
-
-   Rationale: Parentheses help to separate the method name form the parameters
-   and thus increase readability, especially when just quickly scanning the
-   code. Parameter separated from a method name only by a whitespace can be
-   easily mistaken for a part of the method name.
-
 1. Method parameters names should be short and descriptive. They should make
    sense to a person looking at the method signature without any documentation.
-   Use `lower_case_underscore_separated_words` for parameter names.
 
    Good example:
 
@@ -680,71 +448,102 @@ complex and should be split.
 
 ### Class definitions
 
-1. Write short classes that do one thing well and nothing more. Think about how
-   the class will be used by its users and design the API accordingly.
-
-1. Split class definition into the following sections:
-    - Constant definitions
-    - Various definitions (e.g. ActiveRecord validations and associations)
-    - Initialization code
-    - Singleton methods
-    - Public methods
-    - Protected methods
-    - Private methods
-
-   Some of these sections won’t be always present. Sometimes it makes more
-   sense to divide the class by functionality, but this is often a symptom that
-   the class is trying to do too much.
-
-   Rationale: While dividing classes into sections restricts flexibility
-   somewhat, it leads to predictable code layout and makes orientation in
-   classes much easier for programmers not familiar with the class code.
-
 1. Do not put any empty lines after the beginning and before the end of the
    class body. Put empty lines between class sections.
-
-1. Start sections with protected and private methods by `protected`/`private`
-   method call, separated by an empty line from the following methods. Do not
-   increase indentation of the following methods. Do not change method
-   visibility explicitly by invoking the `public`/`protected`/`private` method
-   with explicit method name(s).
-
-1. When defining class methods, use the `def self.method_name` syntax:
-
-   ```ruby
-   class Math
-     def self.sin(a)
-       # …
-     end
-
-     def self.cos(a)
-       # …
-     end
-   end
-   ```
-
-   Rationale: While explicit definition of the singleton class using `class <<
-   self` is more logical (it corresponds to what the interpreter actually does
-   internally) and allows to use class methods of the singleton class between
-   `class << self` and `end`, the `self.` prefix makes singleton methods stand
-   out. This is more useful in practice.
-
-### Names
-
-Use short and descriptive class names. Above all, they should make sense at the
-place where the class instance is created or static methods called. Use
-CamelCase for method names.
 
 Usually, class names should contain a noun describing what the class instance
 represents, possibly precised with few adjectives. If the primary purpose of
 the class is executing some process, the class name should usually end with
 “-er” (as in `FooImporter`, `BarExporter`, `BazScanner`, etc.)
 
-### Module definitions
 
-Rules for module definitions are basically the same as for class definitions.
+### Additional rationale
 
-## Rationals for Rubocop configuration
+#### Code Layout
+
+1. **Wrap lines at 80 columns.** This is not a hard rule, but if you break it,
+         it should be only because the code would be less readable otherwise (e.g.
+   you are embedding a long URL). [link](https://github.com/bbatsov/ruby-style-guide#80-character-limits)
+
+   Rationale: While long lines are not a problem on wide-screen displays, many
+   people look at the code on terminals, e-mail clients, etc. where the viewport
+   isn’t that wide. People also use multiple editor windows side-by-side (e.g.
+   when writing code and tests for it simultaneously)
+   or viewing diffs.
+
+1. **Avoid trailing whitespace.** [link](https://github.com/bbatsov/ruby-style-guide#no-trailing-whitespace)
+
+   Tip: You can highlight trailing whitespace in vim by adding the following
+   lines in your `~/.vimrc`:
+
+   ```vim
+   " Highlight traling whitespace
+   autocmd ColorScheme * highlight TrailingWhitespace ctermbg=red guibg=red
+   autocmd InsertEnter * match TrailingWhitespace /some nonsense/
+   autocmd InsertLeave * match TrailingWhitespace /\s\+$/}}
+   ```
+
+####  Strings
+
+1. **Write all strings surrounded with double quotes.** Single quotes should be
+   used only in cases where interpolation is really not desired (e.g. you have
+   a string containing the `#` character). [link](https://github.com/bbatsov/ruby-style-guide#consistent-string-literals)
+
+   Rationale: In many languages, single quotes are used for characters, not
+   strings. This rule makes it easier to work in multi-language environment.
+
+1. **Prefer string interpolation to concatenating using the `+` operator.**
+   However, use string interpolation with short expressions only. If the
+   interpolated expression is too long, save its value into a variable in front
+   of the string literal and use that variable inside the string. [link](https://github.com/bbatsov/ruby-style-guide#string-interpolation)
+
+#### Regular expressions
+
+Writing good regular expressions is tricky. Always consider what inputs the
+expression may encounter and how flexible the regular expression should be. If
+you know in advance what values will get fed in, you should write the
+expression as strictly as possible, so that an unexpected value will trigger an
+error. On the other hand, if the expression will be used in unknown environment
+or on wide variety of inputs, it usually makes sense to make it more
+permissive.
+
+1. If the regular expression is complex or very long, use the extended form
+   (enabled using the `/x` flag) with indentation, whitespace and comments to
+   indicate structure and meaning. See e.g. “Define the messy regexen up here”
+   section of http://www.jwz.org/hacks/mork.pl for good examples of this in
+   Perl. [link](https://github.com/bbatsov/ruby-style-guide#comment-regexes)
+
+#### Exceptions
+
+1. Don't suppress exceptions [link](https://github.com/bbatsov/ruby-style-guide#dont-hide-exceptions)
+
+   Rationale: By catching only exceptions you anticipate you make sure
+   unanticipated exceptions will pass through your handler and will be handled
+   by a generic top-level exception handler (either the Ruby one or a custom
+   one). This usually makes them visible. Since unanticipated exceptions often
+   mean bugs in the code, this strategy ensures that bugs won’t go unnoticed.
+   The opposite (using catch-all handlers) would hide them.
+
+#### Methods
+
+1. Always use parentheses around method parameters, except when the method does
+   not have any. [link](https://github.com/bbatsov/ruby-style-guide#method-parens)
+
+   Rationale: Parentheses help to separate the method name form the parameters
+   and thus increase readability, especially when just quickly scanning the
+   code. Parameter separated from a method name only by a whitespace can be
+   easily mistaken for a part of the method name.
+
+
+## Automatic style checking
+
+To make it easy to check conformance to the style guide we use
+[RuboCop](http://batsov.com/rubocop/). As a base we use the [standard
+configuration of Hound CI](https://raw.githubusercontent.com/thoughtbot/hound/master/config/style_guides/ruby.yml).
+We adapt that to our needs by a [SUSE specific configuration](https://github.com/SUSE/style-guides/blob/master/rubocop-suse.yml).
+
+This section gives the rationales for the settings we use. They are linked from
+the configuration.
 
 ### Lint/EndAlignment
 
