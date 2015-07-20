@@ -56,3 +56,11 @@ Style/StringLiterals:
 Style/StringLiteralsInInterpolation:
   StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#stylestringliteralsininterpolation
   EnforcedStyle: double_quotes
+
+Style/WordArray:
+  StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#deviations-from-the-upstream-style-guide
+  Enabled: false
+
+Style/RegexpLiteral:
+  StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#deviations-from-the-upstream-style-guide
+  Enabled: false
