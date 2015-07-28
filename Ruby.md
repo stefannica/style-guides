@@ -384,6 +384,9 @@ the code with return value checks. This power is easily misused.
    Rationale: Using `$!` is fragile. It easily breaks when exception is raised
    in an exception handler or code is moved around.
 
+1. Use `raise` for raising exceptions. While `fail` works as well it is not
+   very commonly used and should be avoided in order to prevent confusion.
+
 ##### Defining exception classes
 
 1. Make your exception classes subclasses of `StandardError` so they are
