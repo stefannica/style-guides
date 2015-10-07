@@ -585,3 +585,9 @@ quotes for better consistency.
 ### Style/StringLiteralsInInterpolation
 
 In interpolation double quotes are more practible, so prefer using them.
+
+### Style/NumericLiterals
+
+Rubocop's default value is to always check for underscores on large numeric
+literals. This is mostly fine, but it can be ridiculous, for example, if the
+application only uses "large" numeric literals for TCP ports.
