@@ -566,6 +566,9 @@ contaning a URI to be longer than Max.
 
 ### Style/AlignHash
 
+We use the `table` option because it increases readability. See also the
+[Hashes](#hashes) section.
+
 ### Style/AlignParameters
 
 ### Style/CollectionMethods
