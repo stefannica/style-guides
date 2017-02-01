@@ -7,8 +7,7 @@ These are coding conventions used by all SUSE projects written in Ruby (such as
 [YaST](http://yast.github.io/), or [Machinery](http://machinery-project.org).
 We are making them public for the benefit of our external contributors and the
 Ruby community in general. The original author is [David
-Majda](https://github.com/dmajda). The current maintainer is [Cornelius
-Schumacher](https://github.com/cornelius).
+Majda](https://github.com/dmajda). The current maintainer is [Miquel Sabaté Solà](https://github.com/mssola).
 
 
 ## General rules
